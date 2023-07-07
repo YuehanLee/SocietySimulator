@@ -13,5 +13,6 @@ UCLASS()
 class SOCIETYSIMULATOR_API ASocietySimulatorGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+public:
+	ASocietySimulatorGameModeBase();
 };
