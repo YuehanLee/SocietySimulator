@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/HUD.h"
+#include "SocietySimulatorCharacter.h"
 #include "SocietySimulatorHUD.generated.h"
 
 /**
@@ -20,5 +21,5 @@ public:
 	FVector2D CurrentPoint;
 	FVector2D GetMousePos2D();
 	bool bStartSelecting = false;
-	TArray <APawn*> FoundPawns;
+	TArray <ASocietySimulatorCharacter*> FoundCharacters;
 };

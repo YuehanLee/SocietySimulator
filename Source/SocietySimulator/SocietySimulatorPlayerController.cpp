@@ -5,6 +5,8 @@
 #include "SocietySimulatorHUD.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "NavigationSystem.h"
+#include "Blueprint/AIBlueprintHelperLibrary.h"
 
 ASocietySimulatorPlayerController::ASocietySimulatorPlayerController()
 {
@@ -37,7 +39,7 @@ void ASocietySimulatorPlayerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(SetLeftClickAction, ETriggerEvent::Started, this, &ASocietySimulatorPlayerController::SelectionPressed);
 		EnhancedInputComponent->BindAction(SetLeftClickAction, ETriggerEvent::Completed, this, &ASocietySimulatorPlayerController::SelectionReleased);
 
-		EnhancedInputComponent->BindAction(SetLeftClickAction, ETriggerEvent::Started, this, &ASocietySimulatorPlayerController::MoveReleased);
+		EnhancedInputComponent->BindAction(SetRightClickAction, ETriggerEvent::Started, this, &ASocietySimulatorPlayerController::MoveReleased);
 	}
 }
 
@@ -59,6 +61,7 @@ void ASocietySimulatorPlayerController::SelectionReleased()
 	/*if (GEngine)
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("2!"));*/
 	HUDPtr->bStartSelecting = false;
+	SelectedCharacters = HUDPtr->FoundCharacters;
 	HUDPtr->CurrentPoint = HUDPtr->GetMousePos2D();
 	FString x = FString::SanitizeFloat(HUDPtr->CurrentPoint.X);
 	FString y = FString::SanitizeFloat(HUDPtr->CurrentPoint.Y);
@@ -70,5 +73,16 @@ void ASocietySimulatorPlayerController::SelectionReleased()
 
 void ASocietySimulatorPlayerController::MoveReleased()
 {
-
+	if (SelectedCharacters.Num() > 0) 
+	{
+		for (int32 i = 0; i < SelectedCharacters.Num(); i++) 
+		{
+			FHitResult Hit;
+			GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, false, Hit);
+			FVector MoveLocation = Hit.Location;
+			//UNavigationSystemV1::SimpleMoveToLocation(SelectedCharacters[i]->GetController(), MoveLocation);
+			UAIBlueprintHelperLibrary::SimpleMoveToLocation(SelectedCharacters[i]->GetController(), MoveLocation);
+			//GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Black, TEXT("----------"));
+		}
+	}
 }
