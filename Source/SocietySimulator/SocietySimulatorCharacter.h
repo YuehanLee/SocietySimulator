@@ -4,6 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "SocietySimulatorResource.h"
+#include "SocietySimulatorBuilding.h"
+#include "SelectedUnitWidget.h"
 #include "SocietySimulatorCharacter.generated.h"
 
 UCLASS()
@@ -29,11 +32,32 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	void SetSelected();
-	void SetDeselected();
-
+	UFUNCTION()
+	void SetSelected() ;
+	UFUNCTION()
+	void SetDeselected() ;
+	void IsWorking(ASocietySimulatorResource* input);
+	void ContinueWorking();
+	void IsNotWorking() { isWorking = false; };
+	void HaveResource() { haveResource = true; };
+	void StoreResource() { haveResource = false; };
+	USelectedUnitWidget* SelectedUnitWidget;
+	float ProductionTime = 1;
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Default, meta = (AllowPrivateAccess = "true"))
 	class UDecalComponent* SelectionDecal;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Default, meta = (AllowPrivateAccess = "true"))
+	class UBoxComponent* Collision;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Default, meta = (AllowPrivateAccess = "true"))
+	class UTexture2D* UnitIcon;
+	bool isWorking = false;
+	ASocietySimulatorResource* SelectedResource;
+	ASocietySimulatorBuilding* CollectResourceBuilding;
+	float ShortestDistance = 50000;
+	bool haveResource = false;
+	//TSubclassOf<UUserWidget> SelectedUnitWidget;
+	TSubclassOf<UUserWidget> SelectedUnitWidgetC;
+	
+	
 
 };

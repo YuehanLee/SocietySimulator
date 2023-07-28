@@ -5,13 +5,15 @@
 #include "CoreMinimal.h"
 #include "GameFramework/HUD.h"
 #include "SocietySimulatorCharacter.h"
+#include "SocietySimulatorBuilding.h"
+#include "SocietySimulatorInterface.h"
 #include "SocietySimulatorHUD.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SOCIETYSIMULATOR_API ASocietySimulatorHUD : public AHUD
+class SOCIETYSIMULATOR_API ASocietySimulatorHUD : public AHUD, public ISocietySimulatorInterface
 {
 	GENERATED_BODY()
 
@@ -21,5 +23,10 @@ public:
 	FVector2D CurrentPoint;
 	FVector2D GetMousePos2D();
 	bool bStartSelecting = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray <ASocietySimulatorCharacter*> FoundCharacters;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray <ASocietySimulatorBuilding*> FoundBuildings;
+	void ClearSelectedUnits_Implementation() override;
+	void SelectSingleUnit_Implementation(AActor* Unit) override;
 };
