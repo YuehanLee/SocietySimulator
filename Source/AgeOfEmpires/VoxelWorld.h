@@ -24,7 +24,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintCallable)
-	float GetTerrainHeight(const FVector2D Location);
+	float GetTerrainHeight(const FVector2D Location, const float Scale, const float Amplitude);
 
 
 };

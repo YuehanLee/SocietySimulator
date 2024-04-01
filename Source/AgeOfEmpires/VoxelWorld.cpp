@@ -25,3 +25,7 @@ void AVoxelWorld::Tick(float DeltaTime)
 
 }
 
+float AVoxelWorld::GetTerrainHeight(const FVector2D Location, const float Scale, const float Amplitude) {
+
+	return FMath::PerlinNoise2D(Location / Scale+FVector2D(.1f,.1f)) * Amplitude;
+}
